@@ -19,16 +19,19 @@ public class Main {
         Function<String , Integer> transformable = num -> Integer.parseInt(num);
         System.out.println(transformable.apply("3")+3);
 
-        String str = "AAA BBBB dEF cDkls bBb";
+        String str = "AAA bbbb dEF cDkls bBb";
+        Predicate<String> predicate = s -> s.length() == 3;
+        Function<String, String> function = s -> s.toLowerCase();
+        System.out.println(training(str,predicate,function));
 
-        Predicate<Integer> length1 = num -> num==3;
-        System.out.println(training(str,length1));
+        Predicate<String> predicate1 = s -> s.length() == 4;
+        Function<String, String> function1 = s -> s.toUpperCase();
+        System.out.println(training(str,predicate1,function1));
 
-        Predicate<Integer> length2 = num -> num==4;
-        System.out.println(training(str,length2));
+        Predicate<String> predicate2 = s -> s.length() == 5;
+        Function<String, String> function2 = s -> s="*****";
+        System.out.println(training(str,predicate2,function2));
 
-        Predicate<Integer> length3 = num -> num==5;
-        System.out.println(training(str,length3));
 
 
 
@@ -51,26 +54,15 @@ public class Main {
 На выходе будет: aaa BBBB def cDkls bbb
 Это задача со звездочкой
      */
-    public static String training(String string, Predicate<Integer> predicate){
-        StringBuilder result = new StringBuilder();
+    public static String training(String string, Predicate<String> predicate,Function<String,String>function){
         String[] arr = string.split(" ");
-        for(int i=0;i<arr.length;i++){
-            if(predicate.test(arr[i].length())) {
-                result.append(arr[i].toLowerCase()).append(" ");
-            }
-            else if(predicate.test(arr[i].length())) {
-                result.append(arr[i].toUpperCase()).append(" ");
-            }
-            else if(predicate.test(arr[i].length())){
-                result.append("*****").append(" ");
-                }
-            else {
-                result.append(arr[i]).append(" ");
-            }
-            }
 
-        return result.toString().trim();
+        for(int i=0;i<arr.length;i++) {
+            if(predicate.test(arr[i])){
+                arr[i] = function.apply(arr[i]);
+            }
         }
-
+         return String.join(" ",arr);
+        }
 
 }
